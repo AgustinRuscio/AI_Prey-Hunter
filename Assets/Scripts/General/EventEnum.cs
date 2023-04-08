@@ -6,5 +6,6 @@ public enum EventEnum
 {
     ReturnFruit,
     ChangePreyDirection,
+    RemoveItemFromList,
 
 }
