@@ -18,14 +18,7 @@ public class Prey : Agent
     {
         EventManager.Subscribe(EventEnum.ChangePreyDirection, Redirection);
     }
-
-    protected override void Start()
-    {
-        base.Start();
-       // ApplyForce(new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)) * _speed);
-
-    }
-
+    
     protected override void Update()
     {
         base.Update();
@@ -41,7 +34,7 @@ public class Prey : Agent
         }
 
 
-        //new 
+        /*new 
         transform.position += _velocity * Time.deltaTime;
         transform.forward = _velocity;
 
@@ -58,7 +51,7 @@ public class Prey : Agent
             }
         }
 
-        Debug.Log("soy velocity de prey " + _velocity);
+        Debug.Log("soy velocity de prey " + _velocity);*/
 
     }
 
@@ -78,18 +71,7 @@ public class Prey : Agent
         return CalculateStreering(desired);
     }
 
-    private Vector3 Seek(Vector3 target)
-    {
-        Vector3 desired = target - transform.position;
-
-        desired.Normalize();
-
-        desired *= _speed;
-
-
-        return CalculateStreering(desired);
-    }
-
+    
     public void Redirection(params object[] parameters)
     {
         ApplyForce(ChangeDirection(-1,1 ,-1,1)); 

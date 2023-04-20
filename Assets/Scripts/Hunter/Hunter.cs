@@ -4,51 +4,68 @@ using UnityEngine;
 
 public class Hunter : Agent
 {
-    protected FiniteStateMachine _finiteStateMach;
+    private FiniteStateMachine _finiteStateMach;
 
+    //--------------------Rest Variables
+
+   
+    public float _actualEnergy;
+
+    
+    public float _maxEnergy;
+    
+    //--------------------Patrol Variables
     [SerializeField]
-    protected Transform[] _waypoints;
+    private Transform[] _waypoints;
 
-    [SerializeField]
-    protected int _actualEnergy;
+    [SerializeField] 
+    private float _waypointDetectionRadius;
 
+    [SerializeField] 
+    private LayerMask _preyLayerMask;
 
+    //--------------------Chase Variables
+    [SerializeField] 
+    private Agent _chaseTarget;
+
+    [SerializeField] 
+    private float _KillRadius;
+
+    
+    
     protected override void Start()
     {
-        
-
-        base.Start();
-        
         _finiteStateMach = new FiniteStateMachine();
-        _finiteStateMach.AddState(AgentStates.Patrol, new PatrolState(transform, _waypoints, _actualEnergy, _velocity, this));
-        _finiteStateMach.AddState(AgentStates.Chase, new ChaseState());
         
-
-
-
-
+        //_finiteStateMach.AddState(AgentStates.Patrol, new PatrolState(transform, _waypoints, _viewRadius, _waypointDetectionRadius, this,_preyLayerMask));
+        _finiteStateMach.AddState(AgentStates.Chase, new ChaseState(_chaseTarget, this, _KillRadius));
+        _finiteStateMach.AddState(AgentStates.Rest, new RestState(_actualEnergy, _maxEnergy, this));
+        
     }
 
     protected override void Update()
     {
-        base.Update();
-
         _finiteStateMach.Update();
-
-        transform.position += _velocity * Time.deltaTime;
-        transform.forward = _velocity;
-
-
+       
+        Move();
     }
 
-
-
+    public void ReduceEnergy()
+    {
+        _actualEnergy -= Time.deltaTime;
+    }
+    
+    
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
 
         Gizmos.DrawWireSphere(transform.position, _viewRadius);
 
+        Gizmos.color = Color.cyan;
+
+        Gizmos.DrawWireSphere(transform.position, _KillRadius);
+        
     }
 
 

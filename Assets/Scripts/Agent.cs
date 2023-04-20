@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Agent : MonoBehaviour
 {
-    protected Vector3 _velocity;
+    [HideInInspector]
+    public Vector3 _velocity;
 
     [SerializeField] [Range(1, 10)]
     protected float _maxForce;
@@ -17,25 +18,14 @@ public class Agent : MonoBehaviour
 
     [SerializeField]
     protected LayerMask _obstacleMask;
-
     
-
-
-
     protected virtual void Start()
     {
-        //lo mismo de abajo con la fsm, intento cambiar el start para que no tire error el prey
-
-       //ApplyForce(new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)) * _speed);
-
-        
+        ApplyForce(new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)) * _speed);
     }
 
     protected virtual void Update()
     {
-       //lo pase a prey para probar ya que si coloco lo que deberia de poner aca de fsm me tira error la prey y no se mueve
-
-        /*
         transform.position += _velocity * Time.deltaTime;
         transform.forward = _velocity;
 
@@ -50,10 +40,27 @@ public class Agent : MonoBehaviour
 
                 ApplyForce(ChangeDirection(xNegative, 5 ,zNegative, 5));
             }
-        }*/
+        }
+    }
+    public Vector3 Seek(Vector3 target)
+    {
+        Vector3 desired = target - transform.position;
+
+        desired.Normalize();
+
+        desired *= _speed;
+
+
+        return CalculateStreering(desired);
     }
 
-    protected Vector3 CalculateStreering(Vector3 desired)
+    public void Move()
+    {
+        transform.position += _velocity * Time.deltaTime;
+        transform.forward = _velocity;
+    }
+    
+    public Vector3 CalculateStreering(Vector3 desired)
     {
         Vector3 steering = desired - _velocity;
         steering = Vector3.ClampMagnitude(steering, _maxForce * Time.deltaTime);
@@ -67,21 +74,15 @@ public class Agent : MonoBehaviour
 
         return CalculateStreering(newDirection);
     }
-
-
+    
     public void ApplyForce(Vector3 force)
     {
         _velocity = Vector3.ClampMagnitude(_velocity + force, _speed);
     }
 
-
-  
-}
-
-
-public enum AgentStates
-{
-    Patrol,
-    Rest,
-    Chase
+    public void AutoDestruction()
+    {
+        Destroy(gameObject);
+    }
+    
 }
