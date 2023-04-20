@@ -7,7 +7,6 @@ public class Food : MonoBehaviour
 {
     private Action<Food> _destroyMethod;
 
-
     private void Awake() => EventManager.Subscribe(EventEnum.ReturnFruit, ReturnFuit);
 
     public virtual void Initialize(Vector3 initPosition, Action<Food> destroyMethod)
@@ -20,7 +19,6 @@ public class Food : MonoBehaviour
     {
         EventManager.Trigger(EventEnum.ChangePreyDirection);
         EventManager.Trigger(EventEnum.RemoveItemFromList, this);
-        
     }
 
     private void OnTriggerEnter(Collider other)

@@ -19,6 +19,7 @@ public class FoodSpawner : MonoBehaviour
     private void Awake()
     {
         _foodFactory = new FoodFactory(_foodPrefab);
+        //                      Me suscribo a este           Hago esto
         EventManager.Subscribe(EventEnum.RemoveItemFromList, RemoveFoodFormList);
     }
 

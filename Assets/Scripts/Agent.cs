@@ -6,27 +6,36 @@ public class Agent : MonoBehaviour
 {
     protected Vector3 _velocity;
 
-    [SerializeField]
-    [Range(1, 10)]
+    [SerializeField] [Range(1, 10)]
     protected float _maxForce;
 
     [SerializeField]
-    protected float _speed;
+    public float _speed;
 
     [SerializeField]
     protected float _viewRadius;
 
     [SerializeField]
-    private LayerMask _obstacleMask;
+    protected LayerMask _obstacleMask;
+
+    
 
 
-    private void Start()
+
+    protected virtual void Start()
     {
-        ApplyForce(new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)) * _speed);
+        //lo mismo de abajo con la fsm, intento cambiar el start para que no tire error el prey
+
+       //ApplyForce(new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)) * _speed);
+
+        
     }
 
     protected virtual void Update()
     {
+       //lo pase a prey para probar ya que si coloco lo que deberia de poner aca de fsm me tira error la prey y no se mueve
+
+        /*
         transform.position += _velocity * Time.deltaTime;
         transform.forward = _velocity;
 
@@ -41,7 +50,7 @@ public class Agent : MonoBehaviour
 
                 ApplyForce(ChangeDirection(xNegative, 5 ,zNegative, 5));
             }
-        }
+        }*/
     }
 
     protected Vector3 CalculateStreering(Vector3 desired)
@@ -60,8 +69,19 @@ public class Agent : MonoBehaviour
     }
 
 
-    protected void ApplyForce(Vector3 force)
+    public void ApplyForce(Vector3 force)
     {
         _velocity = Vector3.ClampMagnitude(_velocity + force, _speed);
     }
+
+
+  
+}
+
+
+public enum AgentStates
+{
+    Patrol,
+    Rest,
+    Chase
 }

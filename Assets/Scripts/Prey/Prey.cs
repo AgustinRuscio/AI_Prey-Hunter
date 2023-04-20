@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Prey : Agent
 {
-
     [SerializeField]
     private float _arriveRadius;
 
@@ -14,9 +13,17 @@ public class Prey : Agent
     [SerializeField]
     private LayerMask _hunterMask;
 
+
     private void Awake()
     {
         EventManager.Subscribe(EventEnum.ChangePreyDirection, Redirection);
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+       // ApplyForce(new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)) * _speed);
+
     }
 
     protected override void Update()
@@ -32,6 +39,26 @@ public class Prey : Agent
             if (food[i] != null)
                 ApplyForce(Arrive(food[i].transform.position));
         }
+
+
+        //new 
+        transform.position += _velocity * Time.deltaTime;
+        transform.forward = _velocity;
+
+        Collider[] a = Physics.OverlapSphere(transform.position, _viewRadius, _obstacleMask);
+
+        for (int i = 0; i < a.Length; i++)
+        {
+            if (a[i] != null)
+            {
+                float xNegative = transform.position.x * -1;
+                float zNegative = transform.position.z * -1;
+
+                ApplyForce(ChangeDirection(xNegative, 5, zNegative, 5));
+            }
+        }
+
+        Debug.Log("soy velocity de prey " + _velocity);
 
     }
 
