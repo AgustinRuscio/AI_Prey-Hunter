@@ -11,20 +11,27 @@ public class ChaseState : States
     private float _KillRadius;
     
     
-    public ChaseState(Agent target, Hunter agent, float killRadius)
+    public ChaseState(Hunter agent, float killRadius, Agent chase)
     {
-        _chaseTarget = target;
         _myAgent = agent;
         _KillRadius = killRadius;
+        _chaseTarget = chase;
     }
 
-    public override void OnStart()
+    public override void OnStart(params object[] parameters)
     {
         Debug.Log("chase");
-        _myAgent.ApplyForce(Persuit(_chaseTarget));
+        
+        //if(parameters[0] != null) _chaseTarget = (Transform)parameters[0];
+        
+        _myAgent.ApplyForce(_myAgent.Persuit(_chaseTarget.transform)* _myAgent._speed);
+        EventManager.Trigger(EventEnum.HuntingAnims, true);
     }
-    
-    public override void OnStop() { }
+
+    public override void OnStop()
+    {
+        _chaseTarget = null;
+    }
 
     public override void Update()
     {
@@ -35,24 +42,18 @@ public class ChaseState : States
             Debug.Log("Cambie a Rest ");
             finiteStateMach.ChangeState(AgentStates.Rest); // no me deja cambias de estados
         }
-        
 
-        if(Vector3.Distance(_myAgent.transform.position, _chaseTarget.transform.position) >= _KillRadius)
-            _myAgent.ApplyForce(Persuit(_chaseTarget));
+
+        if (Vector3.Distance(_myAgent.transform.position, _chaseTarget.transform.position) >= _KillRadius)
+        {
+            _myAgent.ApplyForce(_myAgent.Persuit(_chaseTarget.transform) * _myAgent._speed);
+        }
         else
         {
-            _chaseTarget.AutoDestruction();
+            EventManager.Trigger(EventEnum.HuntingAnims, false);
+            EventManager.Trigger(EventEnum.PreyDeath); //Hacer que el Prey se muera con animacion
             finiteStateMach.ChangeState(AgentStates.Patrol);
         }
     }
     
-    private Vector3 Persuit(Agent target)
-    {
-        if (target == null) return Vector3.zero;
-
-        Vector3 futurePos = (target.transform.position + target._velocity);
-        Vector3 desired = futurePos - _myAgent.transform.position;
-        
-        return _myAgent.CalculateStreering(desired);
-    }
 }

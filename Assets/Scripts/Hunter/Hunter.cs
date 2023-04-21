@@ -25,36 +25,40 @@ public class Hunter : Agent
     private LayerMask _preyLayerMask;
 
     //--------------------Chase Variables
-    [SerializeField] 
-    private Agent _chaseTarget;
 
     [SerializeField] 
     private float _KillRadius;
 
+    [SerializeField] private Agent _target;
     
     
     protected override void Start()
     {
         _finiteStateMach = new FiniteStateMachine();
         
-        //_finiteStateMach.AddState(AgentStates.Patrol, new PatrolState(transform, _waypoints, _viewRadius, _waypointDetectionRadius, this,_preyLayerMask));
-        _finiteStateMach.AddState(AgentStates.Chase, new ChaseState(_chaseTarget, this, _KillRadius));
-        _finiteStateMach.AddState(AgentStates.Rest, new RestState(_actualEnergy, _maxEnergy, this));
+        //_finiteStateMach.AddState(AgentStates.Patrol, new PatrolState(this).SetLayerMask(_preyLayerMask).SetWayPoints(_waypoints)
+                        //                        .SetPatrolAgentTransform(transform).SetPreyViewRadius(_viewRadius).SetWaypointsViewRadius(_waypointDetectionRadius));
+        
+        _finiteStateMach.AddState(AgentStates.Chase, new ChaseState(this, _KillRadius, _target));
+        //_finiteStateMach.AddState(AgentStates.Rest, new RestState(this));
         
     }
 
     protected override void Update()
     {
-        _finiteStateMach.Update();
-       
         Move();
+
+        if (ObstacleAvoidanceMovement(false))
+            ObstacleAvoidanceMovement(false);
+        else
+        _finiteStateMach.Update();
+
     }
 
     public void ReduceEnergy()
     {
         _actualEnergy -= Time.deltaTime;
     }
-    
     
     private void OnDrawGizmos()
     {
@@ -66,6 +70,18 @@ public class Hunter : Agent
 
         Gizmos.DrawWireSphere(transform.position, _KillRadius);
         
+        Gizmos.color =Color.magenta;
+
+        Vector3 orpos = (transform.position + new Vector3(0,1,0)) + transform.right/2;
+        
+        Gizmos.DrawLine(orpos, orpos+transform.forward * _viewRadius);
+        
+        Vector3 o2rpos = (transform.position + new Vector3(0,1,0)) - transform.right/2;
+        
+        Gizmos.DrawLine(o2rpos, o2rpos+transform.forward * _viewRadius);
+        
+        Gizmos.color =Color.magenta;
+        //Gizmos.DrawWireSphere(transform.position + new Vector3(0,1,0) + transform.forward, _viewRadius);
     }
 
 

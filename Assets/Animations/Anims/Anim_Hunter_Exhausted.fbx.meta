@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: c9f1c2359027de341b9c26061beccaca
+guid: e7c519ad0e4f3594a83c160482b438c7
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: Anim_Hunter_Walk
+    second: Anim_Hunter_Exhausted
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,11 +36,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Anim_Hunter_Walk
+      name: Anim_Hunter_Exhausted
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 37
+      lastFrame: 298
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

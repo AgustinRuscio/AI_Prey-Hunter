@@ -7,5 +7,7 @@ public enum EventEnum
     ReturnFruit,
     ChangePreyDirection,
     RemoveItemFromList,
-
+    HuntingAnims,
+    PreyDeath,
+    HunterRest,
 }

@@ -18,17 +18,46 @@ public class PatrolState : States
 
     private LayerMask _preyMask;
     
-    public PatrolState(Transform transform, Transform[] waypoints,float viewRadius, float waypointDetectionRadius ,Hunter agent, LayerMask preyMask)
+    public PatrolState(Hunter agent)
     {
-        _transform = transform;
-        _waypoints = waypoints;
-        _chaseTargetViewRadius = viewRadius;
-        _waypointsRadius = waypointDetectionRadius;
         _agent = agent;
-        _preyMask = preyMask;
     }
 
-    public override void OnStart()
+    #region builder
+
+    public PatrolState SetPatrolAgentTransform(Transform transform)
+    {
+        _transform = transform;
+        return this;
+    }
+    public PatrolState SetWayPoints(Transform[] waypoints)
+    {
+        _waypoints = waypoints;
+        return this;
+    }
+    
+    public PatrolState SetWaypointsViewRadius(float waypointDetectionRadius)
+    {
+        _waypointsRadius = waypointDetectionRadius;
+        return this;
+    }
+
+    public PatrolState SetPreyViewRadius(float radius)
+    {
+        _chaseTargetViewRadius = radius;
+        return this;
+    }
+    
+    public PatrolState SetLayerMask(LayerMask layer)
+    {
+        _preyMask = layer;
+        return this;
+    }
+
+    #endregion
+    
+    
+    public override void OnStart(params object[] parameters)
     {
         _agent.ApplyForce(_agent.Seek(Waypoints()));
     }
@@ -36,12 +65,12 @@ public class PatrolState : States
 
     public override void Update()
     {
-        Debug.Log("Entre al patrol");
-        PatrolEnergy();
+        //Debug.Log("Entre al patrol");
+        //PatrolEnergy();   Creo que no tiene que restar energia
 
         ViewPrey();
         
-        _agent.ApplyForce(_agent.Seek(Waypoints()));
+        _agent.ApplyForce(_agent.Seek(Waypoints() * _agent._speed));
     }
 
     private void PatrolEnergy()

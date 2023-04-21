@@ -4,21 +4,24 @@ using UnityEngine;
 
 public class RestState : States
 {
-    private float _actualEnergy;
-    private float _maxEnergy;
-
     private Hunter _myHunter;
-    public RestState(float actualEnergy, float maxEnergy, Hunter hunter)
+    
+    public RestState(Hunter hunter)
     {
         _myHunter = hunter;
     }
 
-    public override void OnStart()
+    public override void OnStart(params object[] parameters)
     {
         _myHunter.ApplyForce(Vector3.zero);
+        EventManager.Trigger(EventEnum.HunterRest, true);
     }
 
-    public override void OnStop() { }
+    public override void OnStop()
+    { 
+        EventManager.Trigger(EventEnum.HunterRest, false);
+        
+    }
 
     public override void Update() 
     {

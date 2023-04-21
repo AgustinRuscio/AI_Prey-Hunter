@@ -11,38 +11,27 @@ public class FiniteStateMachine
 
     public void AddState(AgentStates key, States state)
     {
-        if (_allstates.ContainsKey(key))
-        {
+        if (_allstates.ContainsKey(key)) 
             _allstates[key] = state;
-        }
+        
 
         _allstates.Add(key, state);
-        if (_currentState == null)
-        {
+        
+        if (_currentState == null) 
             ChangeState(key);
-        }
-
     }
 
 
-    public void ChangeState(AgentStates state)
+    public void ChangeState(AgentStates state, params object[] parameters)
     {
         if (!_allstates.ContainsKey(state)) return;
 
         if (_currentState != null) _currentState.OnStop();
         _currentState = _allstates[state];
-        _currentState.OnStart();
-
-
+        _currentState.OnStart(parameters);
     }
 
 
-    public void Update()
-    {
-
-        _currentState.Update();
-
-    }
-
+    public void Update() =>_currentState.Update();
 
 }
