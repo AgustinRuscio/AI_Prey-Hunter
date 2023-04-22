@@ -60,6 +60,7 @@ public class PatrolState : States
     public override void OnStart(params object[] parameters)
     {
         _agent.ApplyForce(_agent.Seek(Waypoints()));
+        Debug.Log("Patrol");
     }
 
 
@@ -70,7 +71,7 @@ public class PatrolState : States
 
         ViewPrey();
         
-        _agent.ApplyForce(_agent.Seek(Waypoints() * _agent._speed));
+        _agent.ApplyForce(_agent.Seek(Waypoints()));
     }
 
     private void PatrolEnergy()

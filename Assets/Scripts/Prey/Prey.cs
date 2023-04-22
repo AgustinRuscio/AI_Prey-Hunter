@@ -4,27 +4,70 @@ using UnityEngine;
 
 public class Prey : Agent
 {
-    [SerializeField]
-    private float _arriveRadius;
+    #region Radius Variables
 
-    [SerializeField]
-    private LayerMask _foodMask;
+        [SerializeField]
+        private float _arriveRadius;
 
-    [SerializeField]
-    private LayerMask _hunterMask;
+        //-------Flocking
+
+        [SerializeField] 
+        private float _separationRadius;
+        
+        #endregion
 
 
+    #region Layer Mask Variables
+
+        [SerializeField]
+        private LayerMask _foodMask;
+
+        [SerializeField]
+        private LayerMask _hunterMask;
+        
+    #endregion
+
+    #region MyRegion
+
+        [SerializeField] [Range(0f, 3f)]
+        private float _separationWeight;
+        
+        [SerializeField] [Range(0f, 3f)]
+        private float _cohesionWeight;
+        
+        [SerializeField] [Range(0f, 3f)]
+        private float _alignmentWeight;
+        
+    #endregion
+    
     private void Awake()
     {
         EventManager.Subscribe(EventEnum.ChangePreyDirection, Redirection);
     }
-    
+
+    protected override void Start()
+    {
+        base.Start();
+        FlokckingManager.instance.AddPrey(this);
+        
+    }
+
     protected override void Update()
     {
-        //base.Update();
+        base.Update();
         Move();
         
-        Collider[] hunters = Physics.OverlapSphere(transform.position, _viewRadius, _hunterMask);
+        //-------------------------------------------------Flocking Movement
+        ApplyForce(Alignment(FlokckingManager.instance.flockMates) * _alignmentWeight);
+        
+        ApplyForce(Cohesion(FlokckingManager.instance.flockMates) * _cohesionWeight);
+        
+        ApplyForce(Separation(FlokckingManager.instance.flockMates) * _separationWeight);
+
+        //------------------------------------------------------------------
+        
+        //-------------------------------------------------Hunter Detection
+        Collider[] hunters = Physics.OverlapSphere(transform.position, _generalViewRadius, _hunterMask);
         
         for (int i = 0; i < hunters.Length; i++)
         {
@@ -36,10 +79,17 @@ public class Prey : Agent
             }
             return;
         }
+        //----------------------------------------------------------------
 
-        Collider[] food = Physics.OverlapSphere(transform.position, _viewRadius, _foodMask);
-
-            
+        
+        //-------------------------------------------------Obstacle Avoice
+        ObstacleAvoidanceMovement(true);
+        //----------------------------------------------------------------
+        
+        
+        //-------------------------------------------------Food Detection
+        Collider[] food = Physics.OverlapSphere(transform.position, _generalViewRadius, _foodMask);
+        
         if(food == null)
             ApplyForce(CalculateStreering(_velocity.normalized * _speed));
             
@@ -48,51 +98,112 @@ public class Prey : Agent
             if (food[i] != null)
                     ApplyForce(Arrive(food[i].transform.position));
         }
-       
-        
+        //---------------------------------------------------------------
 
+    }
 
-        /*new 
+    #region Movement Methods
 
-        Collider[] a = Physics.OverlapSphere(transform.position, _viewRadius, _obstacleMask);
-
-        for (int i = 0; i < a.Length; i++)
+        private Vector3 Arrive(Vector3 arriveTarget)
         {
-            if (a[i] != null)
-            {
-                float xNegative = transform.position.x * -1;
-                float zNegative = transform.position.z * -1;
+            float dist = Vector3.Distance(transform.position, arriveTarget);
 
-                ApplyForce(ChangeDirection(xNegative, 5, zNegative, 5));
-            }
+            if (dist > _arriveRadius)
+                return Seek(arriveTarget);
+
+            Vector3 desired = arriveTarget - transform.position;
+
+            desired.Normalize();
+
+            desired *= _speed * (dist / _arriveRadius);
+
+            return CalculateStreering(desired);
         }
 
-        Debug.Log("soy velocity de prey " + _velocity);*/
+        
+        private void Redirection(params object[] parameters)
+        {
+            ApplyForce(ChangeDirection(-1,1 ,-1,1)); 
+        }
+    
 
-    }
+    #endregion
 
-    private Vector3 Arrive(Vector3 arriveTarget)
-    {
-        float dist = Vector3.Distance(transform.position, arriveTarget);
+    #region Flocking Movement Methods
 
-        if (dist > _arriveRadius)
-            return Seek(arriveTarget);
+        private Vector3 Alignment(HashSet<Prey> preys)
+        {
+            Vector3 desired = default;
+            
+            foreach (var flockMate in preys)
+            {
+                if(Vector3.Distance(flockMate.transform.position, transform.position) <= _generalViewRadius)
+                    desired += flockMate._velocity;
+            }
 
-        Vector3 desired = arriveTarget - transform.position;
+            desired /= preys.Count;
 
-        desired.Normalize();
+            desired.Normalize();
+            desired *= _speed;
+            
+            return CalculateStreering(desired);
+        }
 
-        desired *= _speed * (dist / _arriveRadius);
 
-        return CalculateStreering(desired);
-    }
+        private Vector3 Cohesion(HashSet<Prey> preys)
+        {
+            Vector3 desired = default;
+
+            int localFlockMatesCount = 0;
+            
+            foreach (var flockMate in preys)
+            {
+                if (flockMate == this) continue;
+                
+                if (Vector3.Distance(flockMate.transform.position, transform.position) <= _generalViewRadius)
+                {
+                    localFlockMatesCount++;
+                    desired += flockMate.transform.position;
+                }
+            }
+
+            if(localFlockMatesCount == 0) return Vector3.zero;
+            
+            desired /= localFlockMatesCount;
+
+            return Seek(desired);
+        }
+        
+        private Vector3 Separation(HashSet<Prey> preys)
+        {
+            Vector3 desired = default;
+
+            foreach (var flockMate in preys)
+            {
+                Vector3 dist = flockMate.transform.position - transform.position;
+                
+                if (dist.magnitude <= _separationRadius)
+                {
+                    desired += dist;
+                }
+            }
+
+            if (desired == Vector3.zero) return desired;
+            
+            
+            desired *= -1;
+
+            desired.Normalize();
+            desired *= _speed;
+            
+
+            return CalculateStreering(desired);
+        }
+        
+
+    #endregion
 
     
-    public void Redirection(params object[] parameters)
-    {
-        ApplyForce(ChangeDirection(-1,1 ,-1,1)); 
-    }
-
     private void OnDestroy()
     {
         EventManager.Unsubscribe(EventEnum.ChangePreyDirection, Redirection);
@@ -100,23 +211,36 @@ public class Prey : Agent
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
-        
-        Gizmos.DrawWireSphere(transform.position, _viewRadius);
-
+        //----------------View Radius
         Gizmos.color = Color.red;
+        
+        Gizmos.DrawWireSphere(transform.position, _generalViewRadius);
+
+        //----------------Arrive radius
+        
+        Gizmos.color = Color.green;
         
         Gizmos.DrawWireSphere(transform.position, _arriveRadius);
         
+        //----------------Obstacle Avoidance
         Gizmos.color =Color.magenta;
 
         Vector3 orpos = (transform.position + new Vector3(0,1,0)) + transform.right/2;
         
-        Gizmos.DrawLine(orpos, orpos+transform.forward * _viewRadius);
+        Gizmos.DrawLine(orpos, orpos+transform.forward * _viewObstacleRadius);
         
         Vector3 o2rpos = (transform.position + new Vector3(0,1,0)) - transform.right/2;
         
-        Gizmos.DrawLine(o2rpos, o2rpos+transform.forward * _viewRadius);
+        Gizmos.DrawLine(o2rpos, o2rpos+transform.forward * _viewObstacleRadius);
         
+        //----------------Fence radius
+        Gizmos.color = Color.white;
+        
+        Gizmos.DrawWireSphere(transform.position + transform.forward, _viewFenceRadius);
+
+        //----------------Separation radius
+        Gizmos.color = Color.grey;
+        
+        Gizmos.DrawWireSphere(transform.position, _separationRadius);
     }
 }
