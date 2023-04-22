@@ -6,11 +6,13 @@ public class CameraZoom : MonoBehaviour
 {
     public Transform targetPoint;
 
-    [HideInInspector] public float minZoom = 30;
-    [HideInInspector] public float maxZoom = 30;
+    [SerializeField] 
+    private float minZoom = 30;
+    
+    [SerializeField] 
+    private float maxZoom = 30;
 
-    private bool AIStarted;
-    private float speed = 10;
+    private float _speed = 10;
 
     void Update()
     {
@@ -19,14 +21,12 @@ public class CameraZoom : MonoBehaviour
 
     private void Zoom()
     {
-        //if (!AIStarted) return;
-
         if (Input.GetKey(KeyCode.W))
         {
             float distanceToTarget = Vector3.Distance(transform.position, targetPoint.position);
 
             if (distanceToTarget >= minZoom)
-                transform.position += transform.forward * speed * Time.deltaTime;
+                transform.position += transform.forward * _speed * Time.deltaTime;
         }
 
         else if (Input.GetKey(KeyCode.S))
@@ -34,12 +34,8 @@ public class CameraZoom : MonoBehaviour
             float distanceToTarget = Vector3.Distance(transform.position, targetPoint.position);
 
             if (distanceToTarget <= maxZoom)
-                transform.position -= transform.forward * speed * Time.deltaTime;
+                transform.position -= transform.forward * _speed * Time.deltaTime;
         }
     }
-
-    public void StartSimulation()
-    {
-        AIStarted = true;
-    }
+    
 }
