@@ -37,9 +37,7 @@ public class ObjectPool<T>
         T objToReturn = default(T);
 
         if (pool.Count <= 0)
-        {
             CreateNewObejcts();
-        }
 
         objToReturn = pool[0];
         pool.RemoveAt(0);

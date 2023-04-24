@@ -31,8 +31,6 @@ public class Food : MonoBehaviour
     {
         _destroyMethod(this);
     }
-    
 
     private void OnDestroy() => EventManager.Unsubscribe(EventEnum.ReturnFruit, ReturnFuit);
-    
 }

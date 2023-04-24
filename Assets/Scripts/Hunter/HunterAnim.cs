@@ -14,10 +14,6 @@ public class HunterAnim : MonoBehaviour
         EventManager.Subscribe(EventEnum.HunterRest, SetRestAnim);
     }
 
-    void Update()
-    {
-        
-    }
 
     private void SetRunAnim(params object[] isRunning) => _animator.SetBool("Run", (bool)isRunning[0]);
     private void SetRestAnim(params object[] isRunning) => _animator.SetBool("Resting", (bool)isRunning[0]);

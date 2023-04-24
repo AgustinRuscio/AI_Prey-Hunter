@@ -12,6 +12,7 @@ public class CameraZoom : MonoBehaviour
     [SerializeField] 
     private float maxZoom = 30;
 
+    [SerializeField]
     private float _speed = 10;
 
     void Update()
@@ -28,7 +29,6 @@ public class CameraZoom : MonoBehaviour
             if (distanceToTarget >= minZoom)
                 transform.position += transform.forward * _speed * Time.deltaTime;
         }
-
         else if (Input.GetKey(KeyCode.S))
         {
             float distanceToTarget = Vector3.Distance(transform.position, targetPoint.position);
@@ -37,5 +37,4 @@ public class CameraZoom : MonoBehaviour
                 transform.position -= transform.forward * _speed * Time.deltaTime;
         }
     }
-    
 }

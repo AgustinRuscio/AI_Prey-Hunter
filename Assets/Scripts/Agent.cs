@@ -7,7 +7,6 @@ using Random = UnityEngine.Random;
 
 public class Agent : MonoBehaviour
 {
-
     #region Movement Variables
 
         [HideInInspector]
@@ -20,8 +19,7 @@ public class Agent : MonoBehaviour
         public float _speed;
         
     #endregion
-
-
+    
     #region All Radius variables
 
         [SerializeField]
@@ -35,7 +33,7 @@ public class Agent : MonoBehaviour
         
     #endregion
 
-    #region Layer mask needed
+    #region Layer mask varibles needed
 
         [SerializeField]
         protected LayerMask _fenceMask;
@@ -45,14 +43,11 @@ public class Agent : MonoBehaviour
         
     #endregion
 
-    protected virtual void Start()
-    {
-        ApplyForce(new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)) * _speed);
-    }
+    protected virtual void Start() => ApplyForce(new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)) * _speed);
+    
 
     protected virtual void Update()
     {
-        
         //-------------------------------------------------Fence Avoidance
        Collider[] fenceDetection = Physics.OverlapSphere(transform.position + transform.forward, _viewFenceRadius, _fenceMask);
 
@@ -73,7 +68,6 @@ public class Agent : MonoBehaviour
            }
        }
        //-------------------------------------------------------------------
-        
     }
 
 
@@ -199,12 +193,6 @@ public class Agent : MonoBehaviour
             _velocity = Vector3.ClampMagnitude(_velocity + force, _speed);
         }
         
-    #endregion
-
-    #region Flocking
-
-    
-
     #endregion
     
     public void AutoDestruction()

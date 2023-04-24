@@ -5,10 +5,10 @@ using UnityEngine;
 public class FiniteStateMachine
 {
     
-    States _currentState;
-    Dictionary<AgentStates, States> _allstates = new Dictionary<AgentStates, States>();
-
-
+    private States _currentState;
+    
+    private Dictionary<AgentStates, States> _allstates = new Dictionary<AgentStates, States>();
+    
     public void AddState(AgentStates key, States state)
     {
         if (_allstates.ContainsKey(key)) 
@@ -33,5 +33,4 @@ public class FiniteStateMachine
 
 
     public void Update() =>_currentState.Update();
-
 }

@@ -83,7 +83,6 @@ public class PatrolState : States
             Debug.Log("cambie de estado a rest");
             finiteStateMach.ChangeState(AgentStates.Rest);
         }
-
     }
 
 
@@ -95,7 +94,6 @@ public class PatrolState : States
             
             if (_currentWaypoint >= _waypoints.Length)
                 _currentWaypoint = 0;
-
         }
 
         return _waypoints[_currentWaypoint].position;
@@ -108,8 +106,6 @@ public class PatrolState : States
 
     private void ViewPrey()
     {
-        //veo a la presa y cambio a chase state
-        
         Collider[] preyDetector = Physics.OverlapSphere(_transform.position, _chaseTargetViewRadius, _preyMask);
 
         for (int i = 0; i < preyDetector.Length; i++)
@@ -119,9 +115,7 @@ public class PatrolState : States
                 Debug.Log("Cambie a Chase");
                 finiteStateMach.ChangeState(AgentStates.Chase);
             }
-           
         }
-    
     }
 
     public override void OnStop() { }

@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class ChaseState : States
 {
-    private Agent _chaseTarget; //Hacer que el target vaya cambiadno
+    private Transform _chaseTarget; //Hacer que el target vaya cambiadno
     
     private Hunter _myAgent;
 
     private float _KillRadius;
-    
-    
+
+    private MonoBehaviour a;
     public ChaseState(Hunter agent, float killRadius, Agent chase)
     {
         _myAgent = agent;
         _KillRadius = killRadius;
-        _chaseTarget = chase;
+        //_chaseTarget = chase;
     }
 
     public override void OnStart(params object[] parameters)
@@ -23,7 +23,11 @@ public class ChaseState : States
         Debug.Log("chase");
         
         //if(parameters[0] != null) _chaseTarget = (Transform)parameters[0];
-        
+
+        //var objective = parameters[0];
+        //objective = a.GetComponent<Transform>();
+        //_chaseTarget = objective;
+
         _myAgent.ApplyForce(_myAgent.Persuit(_chaseTarget.transform)* _myAgent._speed);
         EventManager.Trigger(EventEnum.HuntingAnims, true);
     }
@@ -55,5 +59,4 @@ public class ChaseState : States
             finiteStateMach.ChangeState(AgentStates.Patrol);
         }
     }
-    
 }

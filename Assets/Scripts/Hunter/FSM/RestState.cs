@@ -20,7 +20,6 @@ public class RestState : States
     public override void OnStop()
     { 
         EventManager.Trigger(EventEnum.HunterRest, false);
-        
     }
 
     public override void Update() 
@@ -43,6 +42,4 @@ public class RestState : States
         //finiteStateMach.ChangeState(AgentStates.Patrol);
         Debug.Log("Cambio");
     }
-
-
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class States 
 {
-    public FiniteStateMachine finiteStateMach;
+    protected FiniteStateMachine finiteStateMach;
 
     public abstract void OnStart(params object[] parameters);
     

@@ -6,31 +6,38 @@ public class Hunter : Agent
 {
     private FiniteStateMachine _finiteStateMach;
 
-    //--------------------Rest Variables
+    #region Rest Status Variables
 
-   
-    public float _actualEnergy;
+       
+        public float _actualEnergy;
 
+        
+        public float _maxEnergy;
+
+    #endregion
+
+    #region Patrol State Variables
+
+        [SerializeField]
+        private Transform[] _waypoints;
+
+        [SerializeField] 
+        private float _waypointDetectionRadius;
+
+        [SerializeField] 
+        private LayerMask _preyLayerMask;
+        
+    #endregion
     
-    public float _maxEnergy;
+    #region Chase State Variables
     
-    //--------------------Patrol Variables
-    [SerializeField]
-    private Transform[] _waypoints;
+        [SerializeField] 
+        private float _KillRadius;
 
-    [SerializeField] 
-    private float _waypointDetectionRadius;
+        [SerializeField]
+        private Agent _target;
 
-    [SerializeField] 
-    private LayerMask _preyLayerMask;
-
-    //--------------------Chase Variables
-
-    [SerializeField] 
-    private float _KillRadius;
-
-    [SerializeField]
-    private Agent _target;
+    #endregion
     
     
     protected override void Start()
@@ -41,8 +48,7 @@ public class Hunter : Agent
                                                 .SetPatrolAgentTransform(transform).SetPreyViewRadius(_generalViewRadius).SetWaypointsViewRadius(_waypointDetectionRadius));
         
         _finiteStateMach.AddState(AgentStates.Chase, new ChaseState(this, _KillRadius, _target));
-        //_finiteStateMach.AddState(AgentStates.Rest, new RestState(this));
-        
+        _finiteStateMach.AddState(AgentStates.Rest, new RestState(this));
     }
 
     protected override void Update()
@@ -58,13 +64,10 @@ public class Hunter : Agent
         }
         
         _finiteStateMach.Update();
-        
     }
 
-    public void ReduceEnergy()
-    {
-        _actualEnergy -= Time.deltaTime;
-    }
+    public void ReduceEnergy() => _actualEnergy -= Time.deltaTime;
+    
     
     private void OnDrawGizmos()
     {
@@ -88,19 +91,16 @@ public class Hunter : Agent
         
         Gizmos.DrawLine(o2rpos, o2rpos+transform.forward * _viewObstacleRadius);
         
-        //-----Second OPtion
+        //Second OPtion
         Gizmos.color =Color.magenta;
         //Gizmos.DrawWireSphere(transform.position + new Vector3(0,1,0) + transform.forward, _viewObstacleRadius);
         
         //WaypointsDetecttion
         Gizmos.color =Color.yellow;
         Gizmos.DrawWireSphere(transform.position, _waypointDetectionRadius);
-        
-        
+
+        //Fence radius
         Gizmos.color =Color.white;
         Gizmos.DrawWireSphere(transform.position + transform.forward, _viewFenceRadius);
-        
     }
-
-
 }

@@ -8,11 +8,9 @@ public class FoodFactory
 
     private int _foodPreWarm = 15;
 
-    public FoodFactory(Food food)
-    {
-        _foodPool = new ObjectPool<Food>(food, _foodPreWarm, Factory, TurnOn, TurnOff);
-    }
-
+    
+    public FoodFactory(Food food) => _foodPool = new ObjectPool<Food>(food, _foodPreWarm, Factory, TurnOn, TurnOff);
+    
     public Food MakeFood(Vector3 foodPosition)
     {
         Food newFood = _foodPool.GetObjects();
@@ -20,20 +18,17 @@ public class FoodFactory
         return newFood;
     }
 
-    Food Factory(Food prefab)
+    private Food Factory(Food prefab)
     {
         Food newFood = MonoBehaviour.Instantiate(prefab);
         return newFood;
     }
 
-    public void ReturnBullet(Food foodToReturn)
-    {
-        _foodPool.ReturnObjects(foodToReturn);
-    }
+    private void ReturnBullet(Food foodToReturn) => _foodPool.ReturnObjects(foodToReturn);
 
-    void TurnOn(Food food) => food.gameObject.SetActive(true);
+    private void TurnOn(Food food) => food.gameObject.SetActive(true);
 
-    void TurnOff(Food food)
+    private void TurnOff(Food food)
     {
         food.ReturnFuit();
         food.gameObject.SetActive(false);

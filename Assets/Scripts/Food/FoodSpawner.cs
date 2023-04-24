@@ -9,7 +9,7 @@ public class FoodSpawner : MonoBehaviour
 
     private FoodFactory _foodFactory;
 
-    private float _timer;
+    private GenericTimer _timer;
 
     [SerializeField]
     private float _coolDown;
@@ -18,21 +18,22 @@ public class FoodSpawner : MonoBehaviour
 
     private void Awake()
     {
+        _timer = new GenericTimer(_coolDown);
         _foodFactory = new FoodFactory(_foodPrefab);
-        //                      Me suscribo a este           Hago esto
+        
         EventManager.Subscribe(EventEnum.RemoveItemFromList, RemoveFoodFormList);
     }
 
     void Update()
     {
-        _timer += Time.deltaTime;
+        _timer.RunTimer();
 
-        if (_timer > _coolDown && _foodList.Count < 10)
+        if (_timer.CheckCoolDown() && _foodList.Count < 10)
         {
             Food newFood =  _foodFactory.MakeFood(GenerateRandomPosition());
             _foodList.Add(newFood);
 
-            _timer = 0;
+            _timer.ResetTimer();
         }
     }
 
