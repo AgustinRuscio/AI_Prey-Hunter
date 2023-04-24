@@ -195,9 +195,4 @@ public class Agent : MonoBehaviour
         
     #endregion
     
-    public void AutoDestruction()
-    {
-        Destroy(gameObject);
-    }
-    
 }

@@ -236,6 +236,7 @@ GameObject:
   - component: {fileID: 2234518551850519209}
   - component: {fileID: 2234518551850519208}
   - component: {fileID: 2234518551850519210}
+  - component: {fileID: 6246283799890016928}
   - component: {fileID: 2234518551850519211}
   m_Layer: 9
   m_Name: Prey
@@ -251,7 +252,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1461781348315451405}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.29, y: 0, z: -0.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -325,6 +326,19 @@ MonoBehaviour:
   _separationWeight: 1.49
   _cohesionWeight: 0.22
   _alignmentWeight: 0.97
+--- !u!114 &6246283799890016928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461781348315451405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42787c4923eb7b7438c814d3259e9c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 2234518551850519211}
 --- !u!95 &2234518551850519211
 Animator:
   serializedVersion: 4

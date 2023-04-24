@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Prey : Agent
 {
+    private bool _alive = true;
+    
     #region Radius Variables
 
         [SerializeField]
@@ -15,8 +17,7 @@ public class Prey : Agent
         private float _separationRadius;
         
         #endregion
-
-
+        
     #region Layer Mask Variables
 
         [SerializeField]
@@ -27,7 +28,7 @@ public class Prey : Agent
         
     #endregion
 
-    #region MyRegion
+    #region Flocking Variables
 
         [SerializeField] [Range(0f, 3f)]
         private float _separationWeight;
@@ -43,6 +44,7 @@ public class Prey : Agent
     private void Awake()
     {
         EventManager.Subscribe(EventEnum.ChangePreyDirection, Redirection);
+        EventManager.Subscribe(EventEnum.PreyDeath, OnDeath);
     }
 
     protected override void Start()
@@ -54,6 +56,8 @@ public class Prey : Agent
 
     protected override void Update()
     {
+        if(!_alive) return;
+        
         base.Update();
         Move();
         
@@ -203,10 +207,21 @@ public class Prey : Agent
 
     #endregion
 
+    private void OnDeath(params object[] parameters)
+    {
+        _alive = false;
+        _velocity = Vector3.zero;
+    }
+    
+    private void PreyDeath()
+    {
+        Destroy(gameObject);
+    }
     
     private void OnDestroy()
     {
         EventManager.Unsubscribe(EventEnum.ChangePreyDirection, Redirection);
+        EventManager.Unsubscribe(EventEnum.PreyDeath, OnDeath);
     }
 
     private void OnDrawGizmos()

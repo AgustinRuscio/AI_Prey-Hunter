@@ -44,8 +44,8 @@ public class Hunter : Agent
     {
         _finiteStateMach = new FiniteStateMachine();
         
-        _finiteStateMach.AddState(AgentStates.Patrol, new PatrolState(this).SetLayerMask(_preyLayerMask).SetWayPoints(_waypoints)
-                                                .SetPatrolAgentTransform(transform).SetPreyViewRadius(_generalViewRadius).SetWaypointsViewRadius(_waypointDetectionRadius));
+        //_finiteStateMach.AddState(AgentStates.Patrol, new PatrolState(this).SetLayerMask(_preyLayerMask).SetWayPoints(_waypoints)
+          //                                      .SetPatrolAgentTransform(transform).SetPreyViewRadius(_generalViewRadius).SetWaypointsViewRadius(_waypointDetectionRadius));
         
         _finiteStateMach.AddState(AgentStates.Chase, new ChaseState(this, _KillRadius, _target));
         _finiteStateMach.AddState(AgentStates.Rest, new RestState(this));

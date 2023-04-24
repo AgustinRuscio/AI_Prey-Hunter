@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ChaseState : States
 {
-    private Transform _chaseTarget; //Hacer que el target vaya cambiadno
+    private Agent _chaseTarget; //Hacer que el target vaya cambiadno
     
     private Hunter _myAgent;
 
@@ -15,7 +15,7 @@ public class ChaseState : States
     {
         _myAgent = agent;
         _KillRadius = killRadius;
-        //_chaseTarget = chase;
+        _chaseTarget = chase; // cambiar a transform
     }
 
     public override void OnStart(params object[] parameters)
@@ -56,7 +56,7 @@ public class ChaseState : States
         {
             EventManager.Trigger(EventEnum.HuntingAnims, false);
             EventManager.Trigger(EventEnum.PreyDeath); //Hacer que el Prey se muera con animacion
-            finiteStateMach.ChangeState(AgentStates.Patrol);
+            //finiteStateMach.ChangeState(AgentStates.Patrol);
         }
     }
 }

@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: eb7741556a7a28a4282bc0c84e5f2042
+guid: ddfd915c76e2b664da690fc8a7f47c27
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: HunterShoot
+    second: Anim_Prey_Death
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,11 +36,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: HunterShoot
+      name: Anim_Prey_Death
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 150
+      lastFrame: 71
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -59,7 +59,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.9782609
+        functionName: PreyDeath
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
