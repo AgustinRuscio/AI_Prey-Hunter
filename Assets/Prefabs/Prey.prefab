@@ -306,15 +306,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxForce: 7.12
   _speed: 2
-  _viewFenceRadius: 2.58
-  _viewObstacleRadius: 1.32
-  _generalViewRadius: 4.04
+  _viewFenceRadius: 2.5
+  _viewObstacleRadius: 2.5
+  _generalViewRadius: 4
   _fenceMask:
     serializedVersion: 2
     m_Bits: 128
   _obstacleMask:
     serializedVersion: 2
     m_Bits: 2048
+  _preyAnims: {fileID: 6246283799890016928}
   _arriveRadius: 2.13
   _separationRadius: 1.5
   _foodMask:

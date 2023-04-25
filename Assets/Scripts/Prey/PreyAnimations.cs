@@ -9,16 +9,16 @@ public class PreyAnimations : MonoBehaviour
 
     private void Awake()
     {
-        EventManager.Subscribe(EventEnum.HuntingAnims, SetEscapeAnim);
-        EventManager.Subscribe(EventEnum.PreyDeath, SetDeathAnim);
+       // EventManager.Subscribe(EventEnum.HuntingAnims, SetEscapeAnim);
+       // EventManager.Subscribe(EventEnum.PreyDeath, SetDeathAnim);
     }
     
-    private void SetEscapeAnim(params object[] isEscaping) => _animator.SetBool("Escape", (bool)isEscaping[0]);
-    private void SetDeathAnim(params object[] Death) => _animator.SetTrigger("Death");
+    public void SetEscapeAnim(params object[] isEscaping) => _animator.SetBool("Escape", (bool)isEscaping[0]);
+    public void SetDeathAnim(params object[] death) => _animator.SetTrigger("Death");
     
     private void OnDestroy()
     {
-        EventManager.Unsubscribe(EventEnum.HuntingAnims, SetEscapeAnim);
-        EventManager.Unsubscribe(EventEnum.PreyDeath, SetDeathAnim);
+       // EventManager.Unsubscribe(EventEnum.HuntingAnims, SetEscapeAnim);
+       // EventManager.Unsubscribe(EventEnum.PreyDeath, SetDeathAnim);
     }
 }

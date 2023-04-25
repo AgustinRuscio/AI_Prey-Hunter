@@ -7,10 +7,8 @@ public class CameraRotation : MonoBehaviour
     [SerializeField]
     private float cameraSpeed = 100.0f;
  
-    void Update()
-    {
-        MoveCamera();
-    }
+    void Update() => MoveCamera();
+    
 
     private void MoveCamera()
     {

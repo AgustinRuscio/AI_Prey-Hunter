@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PatrolState : States
 {
+    
     private Transform[] _waypoints;
 
     private Transform _transform;
@@ -56,7 +57,7 @@ public class PatrolState : States
 
     #endregion
     
-    
+    //Encontrar el target y lo guardo. A partir del target se lo paso a Hunter y el hunter se lo pasa al Chase
     public override void OnStart(params object[] parameters)
     {
         _agent.ApplyForce(_agent.Seek(Waypoints()));
@@ -66,8 +67,7 @@ public class PatrolState : States
 
     public override void Update()
     {
-        //Debug.Log("Entre al patrol");
-        //PatrolEnergy();   Creo que no tiene que restar energia
+        PatrolEnergy();  
 
         ViewPrey();
         
@@ -113,6 +113,7 @@ public class PatrolState : States
             if (preyDetector[i] != null)
             {
                 Debug.Log("Cambie a Chase");
+                _agent.GetTarget(preyDetector[i].GetComponent<Prey>());
                 finiteStateMach.ChangeState(AgentStates.Chase);
             }
         }

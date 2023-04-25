@@ -4,37 +4,34 @@ using UnityEngine;
 
 public class ChaseState : States
 {
-    private Agent _chaseTarget; //Hacer que el target vaya cambiadno
-    
+    private Prey _chaseTarget; 
+
+
     private Hunter _myAgent;
 
-    private float _KillRadius;
+    private float _killRadius;
 
-    private MonoBehaviour a;
-    public ChaseState(Hunter agent, float killRadius, Agent chase)
+    public ChaseState(Hunter agent, float killRadius)
     {
         _myAgent = agent;
-        _KillRadius = killRadius;
-        _chaseTarget = chase; // cambiar a transform
+        _killRadius = killRadius;
+     
     }
 
     public override void OnStart(params object[] parameters)
     {
         Debug.Log("chase");
-        
-        //if(parameters[0] != null) _chaseTarget = (Transform)parameters[0];
 
-        //var objective = parameters[0];
-        //objective = a.GetComponent<Transform>();
-        //_chaseTarget = objective;
+        _chaseTarget = _myAgent._target;
 
         _myAgent.ApplyForce(_myAgent.Persuit(_chaseTarget.transform)* _myAgent._speed);
+        
         EventManager.Trigger(EventEnum.HuntingAnims, true);
     }
 
-    public override void OnStop()
+    public override void OnStop() 
     {
-        _chaseTarget = null;
+        EventManager.Trigger(EventEnum.PreyDeath, false);
     }
 
     public override void Update()
@@ -44,19 +41,23 @@ public class ChaseState : States
         if (_myAgent._actualEnergy <= 0)
         {
             Debug.Log("Cambie a Rest ");
-            finiteStateMach.ChangeState(AgentStates.Rest); // no me deja cambias de estados
+            finiteStateMach.ChangeState(AgentStates.Rest);
         }
 
 
-        if (Vector3.Distance(_myAgent.transform.position, _chaseTarget.transform.position) >= _KillRadius)
+        if (Vector3.Distance(_myAgent.transform.position, _chaseTarget.transform.position) >= _killRadius)
         {
             _myAgent.ApplyForce(_myAgent.Persuit(_chaseTarget.transform) * _myAgent._speed);
+            _chaseTarget.OnPersuit(true);
         }
         else
         {
+            _chaseTarget.OnDeath();
+
+            EventManager.Trigger(EventEnum.PreyDeath, true);
             EventManager.Trigger(EventEnum.HuntingAnims, false);
-            EventManager.Trigger(EventEnum.PreyDeath); //Hacer que el Prey se muera con animacion
-            //finiteStateMach.ChangeState(AgentStates.Patrol);
+
+            finiteStateMach.ChangeState(AgentStates.Patrol);
         }
     }
 }

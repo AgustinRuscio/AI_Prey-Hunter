@@ -22,4 +22,10 @@ public class FlokckingManager : MonoBehaviour
         if(!flockMates.Contains(p))
             flockMates.Add(p);
     }
+
+    public void RemovePrey(Prey p)
+    {
+        if(flockMates.Contains(p))
+            flockMates.Remove(p);
+    }
 }

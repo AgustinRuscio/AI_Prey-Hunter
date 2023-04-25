@@ -15,10 +15,8 @@ public class CameraZoom : MonoBehaviour
     [SerializeField]
     private float _speed = 10;
 
-    void Update()
-    {
-        Zoom();
-    }
+    void Update() => Zoom();
+    
 
     private void Zoom()
     {

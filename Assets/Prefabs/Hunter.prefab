@@ -1124,10 +1124,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxForce: 3.91
-  _speed: 3
+  _speed: 2.7
   _viewFenceRadius: 2.5
-  _viewObstacleRadius: 2.2
-  _generalViewRadius: 3.2
+  _viewObstacleRadius: 2.5
+  _generalViewRadius: 4
   _fenceMask:
     serializedVersion: 2
     m_Bits: 128
@@ -1141,11 +1141,12 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
   _waypointDetectionRadius: 2.81
   _preyLayerMask:
     serializedVersion: 2
     m_Bits: 512
-  _KillRadius: 3
+  _KillRadius: 1.5
   _target: {fileID: 0}
 --- !u!114 &2317258545401789145
 MonoBehaviour:

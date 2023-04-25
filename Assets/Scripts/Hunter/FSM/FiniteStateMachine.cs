@@ -14,11 +14,12 @@ public class FiniteStateMachine
         if (_allstates.ContainsKey(key)) 
             _allstates[key] = state;
         
-
         _allstates.Add(key, state);
         
         if (_currentState == null) 
             ChangeState(key);
+        
+        state.finiteStateMach = this;
     }
 
 
@@ -30,7 +31,7 @@ public class FiniteStateMachine
         _currentState = _allstates[state];
         _currentState.OnStart(parameters);
     }
-
-
+    
+    
     public void Update() =>_currentState.Update();
 }

@@ -34,12 +34,12 @@ public class RestState : States
     {
         // accion de rest de no moverse y una animacion de descanso 
 
-        _myHunter._actualEnergy += Time.deltaTime;
+        _myHunter.RecoverEnergy();
     }
 
     private void ReturntoPatrol()
     {
-        //finiteStateMach.ChangeState(AgentStates.Patrol);
+        finiteStateMach.ChangeState(AgentStates.Patrol);
         Debug.Log("Cambio");
     }
 }
