@@ -19,13 +19,19 @@ public class FlokckingManager : MonoBehaviour
 
     public void AddPrey(Prey p)
     {
-        if(!flockMates.Contains(p))
+        if (!flockMates.Contains(p))
+        {
             flockMates.Add(p);
+        }
     }
 
     public void RemovePrey(Prey p)
     {
-        if(flockMates.Contains(p))
+        if (flockMates.Contains(p))
+        {
             flockMates.Remove(p);
+            GameManager.instance.check();
+            Debug.Log("Hice check");
+        }
     }
 }

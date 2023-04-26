@@ -47,14 +47,15 @@ public class Prey : Agent
     private void Awake()
     {
         EventManager.Subscribe(EventEnum.ChangePreyDirection, Redirection);
-        EventManager.Subscribe(EventEnum.PreyDeath, OnDeath);
+        //EventManager.Subscribe(EventEnum.PreyDeath, OnDeath);
+
+        FlokckingManager.instance.AddPrey(this);
     }
 
     protected override void Start()
     {
         base.Start();
 
-        FlokckingManager.instance.AddPrey(this);
     }
 
     protected override void Update()
@@ -124,7 +125,11 @@ public class Prey : Agent
         float dist = Vector3.Distance(transform.position, arriveTarget);
 
         if (dist > _arriveRadius)
+        {
+            Debug.Log("Seek");
             return Seek(arriveTarget);
+        }
+            Debug.Log("Arrive");
 
         Vector3 desired = arriveTarget - transform.position;
 
@@ -214,9 +219,11 @@ public class Prey : Agent
 
         return CalculateStreering(desired);
     }
-    
+
 
     #endregion
+
+    #region States Reaction Methods
 
     public void OnDeath(params object[] parameters)
     {
@@ -226,20 +233,19 @@ public class Prey : Agent
         _preyAnims.SetDeathAnim();
     }
 
-    public void OnPersuit(bool persuit)
-    {
-        _preyAnims.SetEscapeAnim(persuit);
-    }
-    
+    public void OnPersuit(bool persuit) => _preyAnims.SetEscapeAnim(persuit);
+
     private void PreyDeath()
     {
         Destroy(gameObject);
     }
-    
+
+    #endregion
+
     private void OnDestroy()
     {
         EventManager.Unsubscribe(EventEnum.ChangePreyDirection, Redirection);
-        EventManager.Unsubscribe(EventEnum.PreyDeath, OnDeath);
+        //EventManager.Unsubscribe(EventEnum.PreyDeath, OnDeath);
     }
 
     private void OnDrawGizmos()

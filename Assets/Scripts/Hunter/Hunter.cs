@@ -15,6 +15,9 @@ public class Hunter : Agent
     
     public float _maxEnergy;
 
+    [SerializeField]
+    private float _speedRecovery;
+
     #endregion
 
     #region Patrol State Variables
@@ -88,7 +91,7 @@ public class Hunter : Agent
     #region Rest State Methods
 
     public void ReduceEnergy() => _actualEnergy -= Time.deltaTime;
-    public void RecoverEnergy() => _actualEnergy += Time.deltaTime;
+    public void RecoverEnergy() => _actualEnergy += Time.deltaTime * _speedRecovery;
     private void CheckRestState(params object[] isResting) => _resting = (bool)isResting[0];
 
     #endregion

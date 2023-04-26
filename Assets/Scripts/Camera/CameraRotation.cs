@@ -12,6 +12,8 @@ public class CameraRotation : MonoBehaviour
 
     private void MoveCamera()
     {
+        if (!GameManager.instance.SimulationStatus()) return;
+
         if (Input.GetKey(KeyCode.D))
             transform.Rotate(0, cameraSpeed * Time.deltaTime * -1, 0);
         else if (Input.GetKey(KeyCode.A))

@@ -123,18 +123,12 @@ public class Agent : MonoBehaviour
     {
         if (a)
         {
-            if (Physics.Raycast((transform.position + new Vector3(0, 1, 0)) + transform.right / 2, transform.forward,
-                    _viewObstacleRadius, _obstacleMask))
+            if (Physics.Raycast((transform.position + new Vector3(0, 1, 0)) + transform.right / 2, transform.forward, _viewObstacleRadius, _obstacleMask))
             {
-                Debug.Log("if");
-                //return  CalculateStreering((-transform.position - transform.right) * _speed);
                 return  CalculateStreering(-transform.right * _speed);
             }
-            else if (Physics.Raycast((transform.position + Vector3.up) - transform.right / 2, transform.forward,
-                         _viewObstacleRadius, _obstacleMask))
+            else if (Physics.Raycast((transform.position + Vector3.up) - transform.right / 2, transform.forward, _viewObstacleRadius, _obstacleMask))
             {
-                Debug.Log("else");
-                //return  CalculateStreering((transform.position + transform.right) * _speed);
                 return  CalculateStreering(transform.right * _speed);
             }
         }
@@ -171,7 +165,6 @@ public class Agent : MonoBehaviour
         }
         else
         {
-            //Debug.Log("avoidancec");
             ApplyForce(obstacle);
             return true;
         }

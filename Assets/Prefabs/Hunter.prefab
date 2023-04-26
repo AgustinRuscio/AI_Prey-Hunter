@@ -1134,8 +1134,9 @@ MonoBehaviour:
   _obstacleMask:
     serializedVersion: 2
     m_Bits: 2048
-  _actualEnergy: 5000
-  _maxEnergy: 10
+  _actualEnergy: 30
+  _maxEnergy: 20
+  _speedRecovery: 2
   _waypoints:
   - {fileID: 0}
   - {fileID: 0}

@@ -20,6 +20,8 @@ public class CameraZoom : MonoBehaviour
 
     private void Zoom()
     {
+        if (!GameManager.instance.SimulationStatus()) return;
+
         if (Input.GetKey(KeyCode.W))
         {
             float distanceToTarget = Vector3.Distance(transform.position, targetPoint.position);

@@ -44,20 +44,30 @@ public class ChaseState : States
             finiteStateMach.ChangeState(AgentStates.Rest);
         }
 
-
-        if (Vector3.Distance(_myAgent.transform.position, _chaseTarget.transform.position) >= _killRadius)
+        if (_chaseTarget == null) 
         {
-            _myAgent.ApplyForce(_myAgent.Persuit(_chaseTarget.transform) * _myAgent._speed);
-            _chaseTarget.OnPersuit(true);
-        }
-        else
-        {
-            _chaseTarget.OnDeath();
-
-            EventManager.Trigger(EventEnum.PreyDeath, true);
             EventManager.Trigger(EventEnum.HuntingAnims, false);
 
             finiteStateMach.ChangeState(AgentStates.Patrol);
+        }
+
+        if(_chaseTarget != null)
+        {
+
+            if (Vector3.Distance(_myAgent.transform.position, _chaseTarget.transform.position) >= _killRadius )
+            {
+                _myAgent.ApplyForce(_myAgent.Persuit(_chaseTarget.transform) * _myAgent._speed);
+                _chaseTarget.OnPersuit(true);
+            }
+            else
+            {
+                _chaseTarget.OnDeath();
+
+                EventManager.Trigger(EventEnum.PreyDeath, true);
+                EventManager.Trigger(EventEnum.HuntingAnims, false);
+
+                finiteStateMach.ChangeState(AgentStates.Patrol);
+            }
         }
     }
 }

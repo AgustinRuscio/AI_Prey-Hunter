@@ -112,7 +112,7 @@ public class PatrolState : States
         {
             if (preyDetector[i] != null)
             {
-                Debug.Log("Cambie a Chase");
+                Debug.Log("Cambie a Chase");    
                 _agent.GetTarget(preyDetector[i].GetComponent<Prey>());
                 finiteStateMach.ChangeState(AgentStates.Chase);
             }
