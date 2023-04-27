@@ -41,15 +41,14 @@ public class Hunter : Agent
     
     public Prey _target;
 
-        
+    private bool _shooting;
+
     #endregion
 
     private bool _resting;
 
-    private void Awake()
-    {
-        EventManager.Subscribe(EventEnum.HunterRest, CheckRestState);
-    }
+    private void Awake() => EventManager.Subscribe(EventEnum.HunterRest, CheckRestState);
+    
 
     protected override void Start()
     {
@@ -64,6 +63,8 @@ public class Hunter : Agent
 
     protected override void Update()
     {
+        if (_shooting) return;
+
         _finiteStateMach.Update();
         
         if(_resting) return;
@@ -72,12 +73,8 @@ public class Hunter : Agent
         
         Move();
 
-        if (ObstacleAvoidanceMovement(true))
-        {
-            ObstacleAvoidanceMovement(true);
-            return;
-        }
-        
+        if (ObstacleAvoidanceMovement())
+            ObstacleAvoidanceMovement();
     }
 
     public Prey GetTarget(Prey target)
@@ -87,6 +84,17 @@ public class Hunter : Agent
         return _target;
     }
 
+    #region Chase Methods
+
+    public void OnShoot(Transform targetpos)
+    {
+        _velocity = Vector3.zero;
+        transform.LookAt(targetpos);
+        _shooting = true;
+    }
+    public void DisableShootState() => _shooting = false;
+
+    #endregion
 
     #region Rest State Methods
 
@@ -96,11 +104,7 @@ public class Hunter : Agent
 
     #endregion
 
-    private void OnDestroy()
-    {
-        EventManager.Unsubscribe(EventEnum.HunterRest, CheckRestState);
-    }
-
+    private void OnDestroy() => EventManager.Unsubscribe(EventEnum.HunterRest, CheckRestState);
 
     private void OnDrawGizmos()
     {

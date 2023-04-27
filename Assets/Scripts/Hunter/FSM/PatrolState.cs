@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PatrolState : States
 {
-    
     private Transform[] _waypoints;
 
     private Transform _transform;
@@ -19,12 +18,10 @@ public class PatrolState : States
 
     private LayerMask _preyMask;
     
-    public PatrolState(Hunter agent)
-    {
-        _agent = agent;
-    }
-
-    #region builder
+    
+    public PatrolState(Hunter agent) => _agent = agent;
+    
+    #region Builder
 
     public PatrolState SetPatrolAgentTransform(Transform transform)
     {
@@ -56,15 +53,10 @@ public class PatrolState : States
     }
 
     #endregion
+
+    public override void OnStart(params object[] parameters) => _agent.ApplyForce(_agent.Seek(Waypoints()));
     
-    //Encontrar el target y lo guardo. A partir del target se lo paso a Hunter y el hunter se lo pasa al Chase
-    public override void OnStart(params object[] parameters)
-    {
-        _agent.ApplyForce(_agent.Seek(Waypoints()));
-        Debug.Log("Patrol");
-    }
-
-
+    
     public override void Update()
     {
         PatrolEnergy();  
@@ -79,10 +71,7 @@ public class PatrolState : States
         _agent.ReduceEnergy();
       
         if (_agent._actualEnergy <= 0)
-        {
-            Debug.Log("cambie de estado a rest");
             finiteStateMach.ChangeState(AgentStates.Rest);
-        }
     }
 
 
@@ -97,10 +86,6 @@ public class PatrolState : States
         }
 
         return _waypoints[_currentWaypoint].position;
-
-        //_tranform.position += (_waypoints[_currentWaypoint].position - _tranform.position).normalized * _agent._speed * Time.deltaTime;
-        //_agent.ApplyForce((_waypoints[_currentWaypoint].position - _tranform.position).normalized * _agent._speed);
-        //return new Vector3(_waypoints[_currentWaypoint].position.x,0, _waypoints[_currentWaypoint].position.z);
     }
 
 
@@ -111,8 +96,7 @@ public class PatrolState : States
         for (int i = 0; i < preyDetector.Length; i++)
         {
             if (preyDetector[i] != null)
-            {
-                Debug.Log("Cambie a Chase");    
+            { 
                 _agent.GetTarget(preyDetector[i].GetComponent<Prey>());
                 finiteStateMach.ChangeState(AgentStates.Chase);
             }

@@ -5,10 +5,10 @@ using UnityEngine;
 public class Prey : Agent
 {
     private bool _alive = true;
-    
+
     [SerializeField]
     private PreyAnimations _preyAnims;
-    
+
     #region Radius Variables
 
     [SerializeField]
@@ -16,11 +16,11 @@ public class Prey : Agent
 
     //-------Flocking
 
-    [SerializeField] 
+    [SerializeField]
     private float _separationRadius;
-    
+
     #endregion
-        
+
     #region Layer Mask Variables
 
     [SerializeField]
@@ -28,48 +28,41 @@ public class Prey : Agent
 
     [SerializeField]
     private LayerMask _hunterMask;
-    
+
     #endregion
 
     #region Flocking Variables
 
-    [SerializeField] [Range(0f, 3f)]
+    [SerializeField][Range(0f, 3f)]
     private float _separationWeight;
-    
-    [SerializeField] [Range(0f, 3f)]
+
+    [SerializeField][Range(0f, 3f)]
     private float _cohesionWeight;
-    
-    [SerializeField] [Range(0f, 3f)]
+
+    [SerializeField][Range(0f, 3f)]
     private float _alignmentWeight;
-        
+
     #endregion
-    
+
     private void Awake()
     {
         EventManager.Subscribe(EventEnum.ChangePreyDirection, Redirection);
-        //EventManager.Subscribe(EventEnum.PreyDeath, OnDeath);
 
         FlokckingManager.instance.AddPrey(this);
     }
 
-    protected override void Start()
-    {
-        base.Start();
-
-    }
-
     protected override void Update()
     {
-        if(!_alive) return;
-        
+        if (!_alive) return;
+
         base.Update();
         Move();
-        
+
         //-------------------------------------------------Flocking Movement
         ApplyForce(Alignment(FlokckingManager.instance.flockMates) * _alignmentWeight);
-        
+
         ApplyForce(Cohesion(FlokckingManager.instance.flockMates) * _cohesionWeight);
-        
+
         ApplyForce(Separation(FlokckingManager.instance.flockMates) * _separationWeight);
 
         //------------------------------------------------------------------
@@ -77,14 +70,13 @@ public class Prey : Agent
         //-------------------------------------------------Hunter Detection
         HunterDetection();
 
-        
+
         //-------------------------------------------------Obstacle Avoice
-        ObstacleAvoidanceMovement(true);
+        ObstacleAvoidanceMovement();
 
 
         //-------------------------------------------------Food Detection
         FoodDetection();
-
     }
 
     private void FoodDetection()
@@ -108,11 +100,8 @@ public class Prey : Agent
         foreach (Collider detectedHunter in hunters)
         {
             if (detectedHunter != null)
-            {
-                Debug.Log("Corre");
                 ApplyForce(-Persuit(detectedHunter.transform));
 
-            }
             return;
         }
     }
@@ -125,11 +114,8 @@ public class Prey : Agent
         float dist = Vector3.Distance(transform.position, arriveTarget);
 
         if (dist > _arriveRadius)
-        {
-            Debug.Log("Seek");
             return Seek(arriveTarget);
-        }
-            Debug.Log("Arrive");
+
 
         Vector3 desired = arriveTarget - transform.position;
 
@@ -140,12 +126,7 @@ public class Prey : Agent
         return CalculateStreering(desired);
     }
 
-    
-    private void Redirection(params object[] parameters)
-    {
-        ApplyForce(ChangeDirection(-1,1 ,-1,1)); 
-    }
-    
+    private void Redirection(params object[] parameters) => ApplyForce(ChangeDirection(-1, 1, -1, 1));
 
     #endregion
 
@@ -154,10 +135,10 @@ public class Prey : Agent
     private Vector3 Alignment(HashSet<Prey> preys)
     {
         Vector3 desired = default;
-        
+
         foreach (var flockMate in preys)
         {
-            if(Vector3.Distance(flockMate.transform.position, transform.position) <= _generalViewRadius)
+            if (Vector3.Distance(flockMate.transform.position, transform.position) <= _generalViewRadius)
                 desired += flockMate._velocity;
         }
 
@@ -165,7 +146,7 @@ public class Prey : Agent
 
         desired.Normalize();
         desired *= _speed;
-        
+
         return CalculateStreering(desired);
     }
 
@@ -175,11 +156,11 @@ public class Prey : Agent
         Vector3 desired = default;
 
         int localFlockMatesCount = 0;
-        
+
         foreach (var flockMate in preys)
         {
             if (flockMate == this) continue;
-            
+
             if (Vector3.Distance(flockMate.transform.position, transform.position) <= _generalViewRadius)
             {
                 localFlockMatesCount++;
@@ -187,13 +168,13 @@ public class Prey : Agent
             }
         }
 
-        if(localFlockMatesCount == 0) return Vector3.zero;
-        
+        if (localFlockMatesCount == 0) return Vector3.zero;
+
         desired /= localFlockMatesCount;
 
         return Seek(desired);
     }
-    
+
     private Vector3 Separation(HashSet<Prey> preys)
     {
         Vector3 desired = default;
@@ -201,25 +182,22 @@ public class Prey : Agent
         foreach (var flockMate in preys)
         {
             Vector3 dist = flockMate.transform.position - transform.position;
-            
+
             if (dist.magnitude <= _separationRadius)
-            {
                 desired += dist;
-            }
         }
 
         if (desired == Vector3.zero) return desired;
-        
-        
+
+
         desired *= -1;
 
         desired.Normalize();
         desired *= _speed;
-        
+
 
         return CalculateStreering(desired);
     }
-
 
     #endregion
 
@@ -235,18 +213,12 @@ public class Prey : Agent
 
     public void OnPersuit(bool persuit) => _preyAnims.SetEscapeAnim(persuit);
 
-    private void PreyDeath()
-    {
-        Destroy(gameObject);
-    }
+    private void PreyDeath() => Destroy(gameObject);
 
     #endregion
 
-    private void OnDestroy()
-    {
-        EventManager.Unsubscribe(EventEnum.ChangePreyDirection, Redirection);
-        //EventManager.Unsubscribe(EventEnum.PreyDeath, OnDeath);
-    }
+    private void OnDestroy() => EventManager.Unsubscribe(EventEnum.ChangePreyDirection, Redirection);
+    
 
     private void OnDrawGizmos()
     {

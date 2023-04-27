@@ -6,6 +6,8 @@ using UnityEngine;
 public class FlokckingManager : MonoBehaviour
 {
     public static FlokckingManager instance;
+
+    private int _totalPreys;
     
     public HashSet<Prey> flockMates = new HashSet<Prey>();
     
@@ -22,7 +24,13 @@ public class FlokckingManager : MonoBehaviour
         if (!flockMates.Contains(p))
         {
             flockMates.Add(p);
+            _totalPreys += 1;
         }
+    }
+
+    public int ReturnTotalPreys()
+    {
+        return _totalPreys;
     }
 
     public void RemovePrey(Prey p)
@@ -30,8 +38,7 @@ public class FlokckingManager : MonoBehaviour
         if (flockMates.Contains(p))
         {
             flockMates.Remove(p);
-            GameManager.instance.check();
-            Debug.Log("Hice check");
+            GameManager.instance.CheckPreysRemained();
         }
     }
 }

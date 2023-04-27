@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FiniteStateMachine
 {
-    
     private States _currentState;
     
     private Dictionary<AgentStates, States> _allstates = new Dictionary<AgentStates, States>();
@@ -21,17 +20,16 @@ public class FiniteStateMachine
         
         state.finiteStateMach = this;
     }
-
-
+    
     public void ChangeState(AgentStates state, params object[] parameters)
     {
         if (!_allstates.ContainsKey(state)) return;
 
         if (_currentState != null) _currentState.OnStop();
         _currentState = _allstates[state];
+        
         _currentState.OnStart(parameters);
     }
-    
     
     public void Update() =>_currentState.Update();
 }

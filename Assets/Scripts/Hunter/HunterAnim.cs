@@ -15,12 +15,11 @@ public class HunterAnim : MonoBehaviour
         EventManager.Subscribe(EventEnum.HunterRest, SetRestAnim);
     }
 
-
     private void SetRunAnim(params object[] isRunning) => _animator.SetBool("Run", (bool)isRunning[0]);
     private void SetRestAnim(params object[] isResting) => _animator.SetBool("Resting", (bool)isResting[0]);
-    private void SetShootAnim(params object[] shoot) => _animator.SetBool("Shoot", (bool)shoot[0]);
+    private void SetShootAnim(params object[] shoot) => _animator.SetTrigger("Shoot");
     
-    
+
     private void OnDestroy()
     {
         EventManager.Unsubscribe(EventEnum.HuntingAnims, SetRunAnim);

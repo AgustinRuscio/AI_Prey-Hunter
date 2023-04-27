@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class FoodSpawner : MonoBehaviour
 {
+    private List<Food> _foodList = new List<Food>();
+    
+    [SerializeField]
+    private float _coolDown;
+    
     [SerializeField]
     private Food _foodPrefab;
 
@@ -11,10 +16,6 @@ public class FoodSpawner : MonoBehaviour
 
     private GenericTimer _timer;
 
-    [SerializeField]
-    private float _coolDown;
-
-    private List<Food> _foodList = new List<Food>();
 
     private void Awake()
     {
@@ -24,7 +25,7 @@ public class FoodSpawner : MonoBehaviour
         EventManager.Subscribe(EventEnum.RemoveItemFromList, RemoveFoodFormList);
     }
 
-    void Update()
+    private void Update()
     {
         _timer.RunTimer();
 

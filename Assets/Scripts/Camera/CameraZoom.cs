@@ -15,12 +15,14 @@ public class CameraZoom : MonoBehaviour
     [SerializeField]
     private float _speed = 10;
 
-    void Update() => Zoom();
+    private void Update() => Zoom();
+
+    private void Start() => CamaraManager.instance.AddCamera(this.GetComponent<Camera>());
     
 
     private void Zoom()
     {
-        if (!GameManager.instance.SimulationStatus()) return;
+        if (!GameManager.instance.SimulationOn()) return;
 
         if (Input.GetKey(KeyCode.W))
         {

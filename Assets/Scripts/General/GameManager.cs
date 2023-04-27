@@ -17,40 +17,31 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if(instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
     }
 
     private void Start()
     {
         Time.timeScale = 1;
 
-        _preysAlive = FlokckingManager.instance.flockMates.Count;
+        _preysAlive = FlokckingManager.instance.ReturnTotalPreys();
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Tab))
-            SimulationEnd();
-    }
 
-    public bool SimulationStatus()
+    public bool SimulationOn()
     {
         return _simulationStatus;
     }
-
-
-    public void check()
+    
+    public void CheckPreysRemained()
     {
-        Debug.Log("Entre al check check");
         _preysAlive--;
 
         if (_preysAlive <= 0)
-        {
-            SimulationEnd();
-            Debug.Log("End");
-        }
-
-        Debug.Log("alive" + _preysAlive + "Sigo vivo");
+            StartCoroutine(WaitforEnd());
     }
 
     private void SimulationEnd()
@@ -59,6 +50,12 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 0;
         _canvas.SetActive(true);
+    }
+
+    IEnumerator WaitforEnd()
+    {
+        yield return new WaitForSeconds(2);
+        SimulationEnd();
     }
 
 }

@@ -6,10 +6,9 @@ public class RestState : States
 {
     private Hunter _myHunter;
     
-    public RestState(Hunter hunter)
-    {
-        _myHunter = hunter;
-    }
+    
+    public RestState(Hunter hunter) => _myHunter = hunter;
+    
 
     public override void OnStart(params object[] parameters)
     {
@@ -17,10 +16,8 @@ public class RestState : States
         EventManager.Trigger(EventEnum.HunterRest, true);
     }
 
-    public override void OnStop()
-    { 
-        EventManager.Trigger(EventEnum.HunterRest, false);
-    }
+    public override void OnStop() => EventManager.Trigger(EventEnum.HunterRest, false);
+    
 
     public override void Update() 
     {
@@ -30,16 +27,9 @@ public class RestState : States
             ReturntoPatrol();
     }
 
-    private void Rest()
-    {
-        // accion de rest de no moverse y una animacion de descanso 
+    private void Rest() => _myHunter.RecoverEnergy();
+    
 
-        _myHunter.RecoverEnergy();
-    }
-
-    private void ReturntoPatrol()
-    {
-        finiteStateMach.ChangeState(AgentStates.Patrol);
-        Debug.Log("Cambio");
-    }
+    private void ReturntoPatrol() => finiteStateMach.ChangeState(AgentStates.Patrol);
+    
 }

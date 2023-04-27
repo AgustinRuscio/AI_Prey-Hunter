@@ -30,7 +30,7 @@ public class FoodFactory
 
     private void TurnOff(Food food)
     {
-        food.ReturnFuit();
+        food.ReturnFruit();
         food.gameObject.SetActive(false);
     }
 
