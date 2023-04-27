@@ -462,25 +462,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lemon Tree 2 (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 1301814490440934, guid: 631dcab7c4e7c22418d6f6fa3dd74c7d, type: 3}
-      propertyPath: m_Layer
-      value: 11
-      objectReference: {fileID: 0}
     - target: {fileID: 4672969651308510, guid: 631dcab7c4e7c22418d6f6fa3dd74c7d, type: 3}
       propertyPath: m_RootOrder
       value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4672969651308510, guid: 631dcab7c4e7c22418d6f6fa3dd74c7d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 3.8828435
-      objectReference: {fileID: 0}
-    - target: {fileID: 4672969651308510, guid: 631dcab7c4e7c22418d6f6fa3dd74c7d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 3.8828435
-      objectReference: {fileID: 0}
-    - target: {fileID: 4672969651308510, guid: 631dcab7c4e7c22418d6f6fa3dd74c7d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 3.8828435
       objectReference: {fileID: 0}
     - target: {fileID: 4672969651308510, guid: 631dcab7c4e7c22418d6f6fa3dd74c7d, type: 3}
       propertyPath: m_LocalPosition.x

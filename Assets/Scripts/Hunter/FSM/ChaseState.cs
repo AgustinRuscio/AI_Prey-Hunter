@@ -65,12 +65,7 @@ public class ChaseState : States
 
         if(_chaseTarget != null)
         {
-            if (Vector3.Distance(_myAgent.transform.position, _chaseTarget.transform.position) >= _killRadius || !_timer.CheckCoolDown())
-            {
-                _myAgent.ApplyForce(_myAgent.Persuit(_chaseTarget.transform) * _myAgent._speed);
-                _chaseTarget.OnPersuit(true);
-            }
-            else if(Vector3.Distance(_myAgent.transform.position, _chaseTarget.transform.position) <= _killRadius && _timer.CheckCoolDown())
+            if (Vector3.Distance(_myAgent.transform.position, _chaseTarget.transform.position) <= _killRadius && _timer.CheckCoolDown())
             {
                 _timer.ResetTimer();
 
@@ -78,9 +73,14 @@ public class ChaseState : States
 
                 EventManager.Trigger(EventEnum.PreyDeath, true);
                 EventManager.Trigger(EventEnum.HuntingAnims, false);
-                
+
                 _myAgent.OnShoot(_chaseTarget.transform);
                 finiteStateMach.ChangeState(AgentStates.Patrol);
+            }
+            else
+            {
+                _myAgent.ApplyForce(_myAgent.Persuit(_chaseTarget.transform) * _myAgent._speed);
+                _chaseTarget.OnPersuit(true);
             }
         }
     }
