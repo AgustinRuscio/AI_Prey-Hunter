@@ -31,6 +31,11 @@ public class GameManager : MonoBehaviour
     }
 
 
+    public void ChangeSimulationStatus(bool status)
+    {
+        _simulationStatus = status;
+    }
+
     public bool SimulationOn()
     {
         return _simulationStatus;
