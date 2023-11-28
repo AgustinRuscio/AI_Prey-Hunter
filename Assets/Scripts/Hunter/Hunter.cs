@@ -253,7 +253,7 @@ public class Hunter : Agent
 
         #region Con Grid
 
-        if (_query.selected.Any())
+        if (_query.selected.Where(x=>x.GetComponent<Prey>().IsAlive).Any())
         {
             var check = _query.selected.Aggregate(Tuple.Create<float, Prey>(float.MaxValue,null),(currentClosest, currentOnCheck) =>
             {

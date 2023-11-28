@@ -1477,6 +1477,7 @@ GameObject:
   - component: {fileID: 2376948148295303653}
   - component: {fileID: 4548678873791818424}
   - component: {fileID: 4548678873791818425}
+  - component: {fileID: 8955898918789802031}
   m_Layer: 0
   m_Name: Core
   m_TagString: Untagged
@@ -1543,6 +1544,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pauseCamera: {fileID: 1602617242}
+--- !u!114 &8955898918789802031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4548678872336562994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2e0216db1ce4964a9651a25a5cdcd3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _reSpawnCD: 15
 --- !u!1 &4548678872802374513
 GameObject:
   m_ObjectHideFlags: 0

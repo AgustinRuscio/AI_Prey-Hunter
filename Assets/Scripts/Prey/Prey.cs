@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Prey : Agent
@@ -45,9 +43,12 @@ public class Prey : Agent
 
     #endregion
 
+    public bool IsAlive => _alive;
+
     private void Awake()
     {
         EventManager.Subscribe(EventEnum.ChangePreyDirection, Redirection);
+        EventManager.Subscribe(EventEnum.PreyRespawn, ReSpawn);
     }
 
     protected override void Start()
@@ -213,13 +214,30 @@ public class Prey : Agent
     {
         _alive = false;
         _velocity = Vector3.zero;
-        FlokckingManager.instance.RemovePrey(this);
+        //FlokckingManager.instance.RemovePrey(this);
         _preyAnims.SetDeathAnim();
     }
 
     public void OnPersuit(bool persuit) => _preyAnims.SetEscapeAnim(persuit);
 
-    private void PreyDeath() => Destroy(gameObject);
+    private void PreyDeath()
+    {
+        gameObject.SetActive(false);
+        PreyReSpawner.instance.SetNewDeathPrey(this);
+    }
+
+    private void ReSpawn(params object[] parameters)
+    {
+        if((Prey)parameters[0] != this) return;
+        
+        gameObject.SetActive(true);
+        _alive = true;
+        ApplyForce(new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)) * _speed);
+    }
+    
+    //=> Destroy(gameObject);
+    
+    
 
     #endregion
 

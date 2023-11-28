@@ -10,4 +10,5 @@ public enum EventEnum
     HuntingAnims,
     PreyDeath,
     HunterRest,
+    PreyRespawn
 }
