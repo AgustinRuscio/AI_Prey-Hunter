@@ -17,14 +17,17 @@ public class FlokckingManager : MonoBehaviour
             instance = this;
         else
             Destroy(gameObject);
+        
+        flockMates.Clear();
     }
 
     public void AddPrey(Prey p)
     {
         if (!flockMates.Contains(p))
         {
+            Debug.Log(p.name + " se agregó");
+            _totalPreys++;
             flockMates.Add(p);
-            _totalPreys += 1;
         }
     }
 

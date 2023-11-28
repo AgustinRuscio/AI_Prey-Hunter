@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -27,9 +28,14 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
 
-        _preysAlive = FlokckingManager.instance.ReturnTotalPreys();
+        StartCoroutine(WaitForAdded());
     }
 
+    IEnumerator  WaitForAdded()
+    {
+        yield return new WaitForSeconds(.5f);
+        _preysAlive = FlokckingManager.instance.ReturnTotalPreys();
+    }
 
     public void ChangeSimulationStatus(bool status)
     {
@@ -40,7 +46,12 @@ public class GameManager : MonoBehaviour
     {
         return _simulationStatus;
     }
-    
+
+    private void Update()
+    {
+        Debug.Log(_preysAlive + ": preys remains");
+    }
+
     public void CheckPreysRemained()
     {
         _preysAlive--;

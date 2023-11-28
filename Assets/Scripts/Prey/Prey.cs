@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Prey : Agent
@@ -47,7 +48,12 @@ public class Prey : Agent
     private void Awake()
     {
         EventManager.Subscribe(EventEnum.ChangePreyDirection, Redirection);
+    }
 
+    protected override void Start()
+    {
+        base.Start();
+        
         FlokckingManager.instance.AddPrey(this);
     }
 
