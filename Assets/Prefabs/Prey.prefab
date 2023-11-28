@@ -331,6 +331,7 @@ GameObject:
   - component: {fileID: 2234518551850519210}
   - component: {fileID: 6246283799890016928}
   - component: {fileID: 2234518551850519211}
+  - component: {fileID: 6687533626027893104}
   m_Layer: 9
   m_Name: Prey
   m_TagString: Prey
@@ -438,6 +439,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6687533626027893104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461781348315451405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac49b2b6d50c7a749bea4d8294713dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  velocity: {x: 0, y: 0, z: 0}
+  onGrid: 0
 --- !u!1 &1650091304368423977
 GameObject:
   m_ObjectHideFlags: 0

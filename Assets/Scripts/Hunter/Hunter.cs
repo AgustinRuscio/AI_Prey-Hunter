@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using IA2;
 
@@ -54,8 +55,9 @@ public class Hunter : Agent
     private EventFSM<PlayerInputs> _myFsm;
 
     #endregion
-    
-    
+
+    [SerializeField] 
+    private Queries _query;
     
     private void Awake() => EventManager.Subscribe(EventEnum.HunterRest, CheckRestState);
     
@@ -114,10 +116,6 @@ public class Hunter : Agent
             ApplyForce(Seek(Waypoints()));
         };
         
-        //transitions
-        
-        //----
-        
         //Chase
         //State methods
 
@@ -155,7 +153,6 @@ public class Hunter : Agent
                 if (Vector3.Distance(transform.position, _target.transform.position) <= _KillRadius && _timer.CheckCoolDown())
                 {
                     _timer.ResetTimer();
-
                     _target.OnDeath();
 
                     EventManager.Trigger(EventEnum.PreyDeath, true);
@@ -238,17 +235,42 @@ public class Hunter : Agent
     
     private void ViewPrey()
     {
-        Collider[] preyDetector = Physics.OverlapSphere(transform.position, _generalViewRadius, _preyLayerMask);
+        #region Con OverlapSphere
 
-        for (int i = 0; i < preyDetector.Length; i++)
+            //Collider[] preyDetector = Physics.OverlapSphere(transform.position, _generalViewRadius, _preyLayerMask);
+
+            //for (int i = 0; i < preyDetector.Length; i++)
+            //{
+            //    if (preyDetector[i] != null)
+            //    { 
+            //        GetTarget(preyDetector[i].GetComponent<Prey>());
+            //        _myFsm.SendInput(PlayerInputs.Chase);
+            //        return;
+            //    }
+            //}
+        
+        #endregion
+
+        #region Con Grid
+
+        if (_query.selected.Any())
         {
-            if (preyDetector[i] != null)
-            { 
-                GetTarget(preyDetector[i].GetComponent<Prey>());
-                _myFsm.SendInput(PlayerInputs.Chase);
-                return;
-            }
+            var check = _query.selected.Aggregate(Tuple.Create<float, Prey>(float.MaxValue,null),(currentClosest, currentOnCheck) =>
+            {
+                float currentDistance = Vector3.Distance(currentOnCheck.transform.position, transform.position);
+          
+                if (currentDistance < currentClosest.Item1)
+                    currentClosest = Tuple.Create(currentDistance, currentOnCheck.GetComponent<Prey>());
+                
+                return currentClosest;
+            });
+            
+            GetTarget(check.Item2);
+            _myFsm.SendInput(PlayerInputs.Chase);
+            return;
         }
+
+        #endregion
     }
     
     #endregion
