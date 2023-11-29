@@ -1127,7 +1127,6 @@ GameObject:
   - component: {fileID: 2317258545401789151}
   - component: {fileID: 2317258545401789144}
   - component: {fileID: 2317258545401789145}
-  - component: {fileID: 2959390254579888758}
   - component: {fileID: 7189973936361711237}
   m_Layer: 10
   m_Name: Hunter
@@ -1224,6 +1223,14 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   _waypointDetectionRadius: 2.81
   _preyLayerMask:
     serializedVersion: 2
@@ -1244,23 +1251,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 2317258545401789151}
---- !u!114 &2959390254579888758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2317258545401789148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a13e56912cd12994d84bf893fd779f87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isBox: 0
-  radius: 6.52
-  targetGrid: {fileID: 0}
-  width: 13.56
-  height: 30
 --- !u!114 &7189973936361711237
 MonoBehaviour:
   m_ObjectHideFlags: 0

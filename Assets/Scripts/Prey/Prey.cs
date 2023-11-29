@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Prey : Agent
@@ -44,6 +45,9 @@ public class Prey : Agent
     #endregion
 
     public bool IsAlive => _alive;
+
+    [SerializeField]
+    private Queries _queries;
 
     private void Awake()
     {
@@ -143,11 +147,19 @@ public class Prey : Agent
     {
         Vector3 desired = default;
 
-        foreach (var flockMate in preys)
+
+        var inRange = _queries.selected.Select(x => x.GetComponent<Prey>());
+
+        foreach (var VARIABLE in inRange)
         {
-            if (Vector3.Distance(flockMate.transform.position, transform.position) <= _generalViewRadius)
-                desired += flockMate._velocity;
+            desired += VARIABLE._velocity;
         }
+        
+        //foreach (var flockMate in preys)
+        //{
+        //    if (Vector3.Distance(flockMate.transform.position, transform.position) <= _generalViewRadius)
+        //        desired += flockMate._velocity;
+        //}
 
         desired /= preys.Count;
 
@@ -164,16 +176,25 @@ public class Prey : Agent
 
         int localFlockMatesCount = 0;
 
-        foreach (var flockMate in preys)
-        {
-            if (flockMate == this) continue;
 
-            if (Vector3.Distance(flockMate.transform.position, transform.position) <= _generalViewRadius)
-            {
-                localFlockMatesCount++;
-                desired += flockMate.transform.position;
-            }
+        var inRange = _queries.selected.Select(x=>x.GetComponent<Prey>()).Where(x=> x != this);
+
+        foreach (var VARIABLE in inRange)
+        {
+            localFlockMatesCount++;
+            desired += VARIABLE.transform.position;
         }
+        
+        //foreach (var flockMate in preys)
+        //{
+        //    if (flockMate == this) continue;
+//
+        //    if (Vector3.Distance(flockMate.transform.position, transform.position) <= _generalViewRadius)
+        //    {
+        //        localFlockMatesCount++;
+        //        desired += flockMate.transform.position;
+        //    }
+        //}
 
         if (localFlockMatesCount == 0) return Vector3.zero;
 
@@ -186,13 +207,21 @@ public class Prey : Agent
     {
         Vector3 desired = default;
 
-        foreach (var flockMate in preys)
-        {
-            Vector3 dist = flockMate.transform.position - transform.position;
 
-            if (dist.magnitude <= _separationRadius)
-                desired += dist;
+        var inRange = _queries.selected.Select(x => x.GetComponent<Prey>()).Where(x => (x.transform.position - transform.position).magnitude <= _separationRadius);
+
+        foreach (var VARIABLE in inRange)
+        {
+            desired += (VARIABLE.transform.position - transform.position);
         }
+        
+        //foreach (var flockMate in preys)
+        //{
+        //    Vector3 dist = flockMate.transform.position - transform.position;
+//
+        //    if (dist.magnitude <= _separationRadius)
+        //        desired += dist;
+        //}
 
         if (desired == Vector3.zero) return desired;
 

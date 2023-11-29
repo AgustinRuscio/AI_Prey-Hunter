@@ -14,6 +14,12 @@ public class Queries : MonoBehaviour
     public float height = 30f;
     public IEnumerable<GridEntity> selected = new List<GridEntity>();
 
+
+    private void Awake()
+    {
+        targetGrid = FindObjectOfType<SpatialGrid>();
+    }
+
     public IEnumerable<GridEntity> Query()
     {
         if (isBox)
