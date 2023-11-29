@@ -159,6 +159,7 @@ public class Hunter : Agent
                     EventManager.Trigger(EventEnum.HuntingAnims, false);
 
                     OnShoot(transform);
+                    Debug.Log("Salgo del Chase");
                     _myFsm.SendInput(PlayerInputs.Patrol);
                     return;
                 }
@@ -253,9 +254,12 @@ public class Hunter : Agent
 
         #region Con Grid
 
-        if (_query.selected.Where(x=>x.GetComponent<Prey>().IsAlive).Any())
+        //var a = _query.selected.Where(x => x.GetComponent<Prey>().IsAlive);
+        var b = _query.selected.Select(x => x.GetComponent<Prey>()).Where(x=>x.IsAlive);
+        
+        if (b.Any())
         {
-            var check = _query.selected.Aggregate(Tuple.Create<float, Prey>(float.MaxValue,null),(currentClosest, currentOnCheck) =>
+            var check = b.Aggregate(Tuple.Create<float, Prey>(float.MaxValue,null),(currentClosest, currentOnCheck) =>
             {
                 float currentDistance = Vector3.Distance(currentOnCheck.transform.position, transform.position);
           
