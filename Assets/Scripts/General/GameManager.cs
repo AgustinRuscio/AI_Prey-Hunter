@@ -47,11 +47,6 @@ public class GameManager : MonoBehaviour
         return _simulationStatus;
     }
 
-    private void Update()
-    {
-        Debug.Log(_preysAlive + ": preys remains");
-    }
-
     public void CheckPreysRemained()
     {
         _preysAlive--;

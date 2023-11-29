@@ -51,6 +51,7 @@ public class Agent : MonoBehaviour
         if (FenceDetection())
         {
             FenceDetection();
+            Debug.Log("Avoid");
             return;
         }
     }
@@ -90,8 +91,7 @@ public class Agent : MonoBehaviour
 
     private bool FenceDetection()
     {
-        Collider[] fenceDetection =
-            Physics.OverlapSphere(transform.position + transform.forward, _viewFenceRadius, _fenceMask);
+        Collider[] fenceDetection = Physics.OverlapSphere(transform.position + transform.forward, _viewFenceRadius, _fenceMask);
 
         if (fenceDetection == null)
         {

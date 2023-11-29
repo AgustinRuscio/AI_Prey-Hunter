@@ -25,7 +25,6 @@ public class FlokckingManager : MonoBehaviour
     {
         if (!flockMates.Contains(p))
         {
-            Debug.Log(p.name + " se agregó");
             _totalPreys++;
             flockMates.Add(p);
         }

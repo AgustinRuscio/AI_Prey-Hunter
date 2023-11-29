@@ -214,8 +214,9 @@ public class Prey : Agent
     {
         _alive = false;
         _velocity = Vector3.zero;
-        //FlokckingManager.instance.RemovePrey(this);
         _preyAnims.SetDeathAnim();
+        
+        //FlokckingManager.instance.RemovePrey(this);
     }
 
     public void OnPersuit(bool persuit) => _preyAnims.SetEscapeAnim(persuit);
@@ -235,10 +236,6 @@ public class Prey : Agent
         ApplyForce(new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)) * _speed);
     }
     
-    //=> Destroy(gameObject);
-    
-    
-
     #endregion
 
     private void OnDestroy() => EventManager.Unsubscribe(EventEnum.ChangePreyDirection, Redirection);

@@ -18,11 +18,9 @@ public class GridEntity : MonoBehaviour
 	    if (onGrid)
 	    {
             //_rend.color = Color.red;
-		    Debug.Log("In Grid");
 	    }
 	    else
 	    {
-		    Debug.Log("Out Grid");
             //_rend.color = Color.gray;
 		    
 	    }
