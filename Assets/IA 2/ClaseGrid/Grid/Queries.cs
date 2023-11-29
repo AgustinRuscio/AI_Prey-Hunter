@@ -17,7 +17,7 @@ public class Queries : MonoBehaviour
 
     private void Awake()
     {
-        targetGrid = FindObjectOfType<SpatialGrid>();
+        targetGrid = targetGrid == null ?  FindObjectOfType<SpatialGrid>() : targetGrid;
     }
 
     public IEnumerable<GridEntity> Query()
